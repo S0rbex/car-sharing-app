@@ -9,6 +9,13 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    services:
+      oracle:
+        image: gvenzl/oracle-xe:21-slim-faststart
+        ports:
+          - 1521:1521
+        env:
+          ORACLE_PASSWORD: mateacad26
 
     steps:
       - uses: actions/checkout@v4
