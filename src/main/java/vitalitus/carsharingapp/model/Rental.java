@@ -1,14 +1,15 @@
-package model;
+package vitalitus.carsharingapp.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.EnumType;
-import jakarta.persistence.Enumerated;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
-import java.math.BigDecimal;
+import java.time.LocalDate;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -16,35 +17,28 @@ import org.hibernate.annotations.SQLDelete;
 import org.hibernate.annotations.SQLRestriction;
 
 @Entity
-@Setter
 @Getter
-@NoArgsConstructor
-@SQLDelete(sql = "UPDATE cars SET is_deleted = true where id =?")
+@Setter
+@SQLDelete(sql = "UPDATE rentals SET is_deleted = true where id = ?")
 @SQLRestriction(value = "is_deleted=false")
-@Table(name = "cars")
-public class Car {
+@NoArgsConstructor
+@Table(name = "rentals")
+public class Rental {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @Column(nullable = false)
-    private String model;
+    private LocalDate rentalDate;
     @Column(nullable = false)
-    private String brand;
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private Type type;
-    @Column(nullable = false)
-    private int inventory;
-    @Column(nullable = false)
-    private BigDecimal dailyFee;
+    private LocalDate returnDate;
+    @Column(name = "actual_return_date")
+    private LocalDate actualReturnDate;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "car_id", nullable = false)
+    private Car car;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "user_id", nullable = false)
+    private User user;
     @Column(nullable = false, columnDefinition = "TINYINT(1)")
     private boolean isDeleted = false;
-
-    public enum Type {
-        SEDAN,
-        SUV,
-        HATCHBACK,
-        UNIVERSAL
-    }
-
 }

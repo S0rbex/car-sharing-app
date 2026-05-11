@@ -1,0 +1,14 @@
+version: '3.8'
+services:
+  oracle-db:
+    image: gvenzl/oracle-free:latest
+    container_name: oracle_db_container
+    ports:
+      - "1521:1521"
+    environment:
+      - ORACLE_PASSWORD=mateacad26
+    volumes:
+      - oracle_data:/opt/oracle/oradata
+
+volumes:
+  oracle_data:
