@@ -44,7 +44,7 @@ public class Payment {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "rental_id", nullable = false)
     private Rental rental;
-    @Column(nullable = false, columnDefinition = "TINYINT(1)")
+    @Column(name = "is_deleted")
     private boolean isDeleted = false;
 
     public enum Status {
