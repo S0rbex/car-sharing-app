@@ -18,10 +18,10 @@ jobs:
           ORACLE_PASSWORD: mateacad26
           ORACLE_DATABASE: FREEPDB1
         options: >-
-          --health-cmd "echo exit | sqlplus -s sys/mateacad26@localhost:1521/FREEPDB1 as sysdba"
-          --health-interval 10s
-          --health-timeout 5s
-          --health-retries 15
+          --health-cmd="/bin/bash -c 'ps -ef | grep tnslsnr'"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=15
 
     steps:
       - uses: actions/checkout@v4
@@ -32,6 +32,9 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
+
+      - name: Wait for database readiness
+        run: sleep 40
 
       - name: Build with Maven
         env:
