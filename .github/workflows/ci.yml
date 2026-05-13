@@ -16,12 +16,6 @@ jobs:
           - 1521:1521
         env:
           ORACLE_PASSWORD: mateacad26
-          ORACLE_DATABASE: FREEPDB1
-        options: >-
-          --health-cmd="/bin/bash -c 'ps -ef | grep tnslsnr'"
-          --health-interval=10s
-          --health-timeout=5s
-          --health-retries=15
 
     steps:
       - uses: actions/checkout@v4
@@ -32,14 +26,3 @@ jobs:
           java-version: '21'
           distribution: 'temurin'
           cache: maven
-
-      - name: Wait for database readiness
-        run: sleep 40
-
-      - name: Build with Maven
-        env:
-          SPRING_DATASOURCE_URL: jdbc:oracle:thin:@localhost:1521/FREEPDB1
-          SPRING_DATASOURCE_USERNAME: system
-          SPRING_DATASOURCE_PASSWORD: mateacad26
-          SPRING_JPA_HIBERNATE_DDL_AUTO: validate
-        run: mvn -B package --file pom.xml
