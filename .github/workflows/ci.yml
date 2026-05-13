@@ -16,6 +16,7 @@ jobs:
           - 1521:1521
         env:
           ORACLE_PASSWORD: mateacad26
+          ORACLE_DATABASE: FREEPDB1
 
     steps:
       - uses: actions/checkout@v4
@@ -27,5 +28,12 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
+      - name: Wait for Oracle to be ready
+        run: sleep 20
+
       - name: Build with Maven
+        env:
+          SPRING_DATASOURCE_URL: jdbc:oracle:thin:@localhost:1521/FREEPDB1
+          SPRING_DATASOURCE_USERNAME: system
+          SPRING_DATASOURCE_PASSWORD: mateacad26
         run: mvn -B package --file pom.xml
