@@ -29,7 +29,7 @@ jobs:
           cache: maven
 
       - name: Wait for Oracle to be ready
-        run: sleep 20
+        run: sleep 90
 
       - name: Build with Maven
         env:
