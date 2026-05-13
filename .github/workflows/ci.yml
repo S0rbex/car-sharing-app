@@ -36,4 +36,4 @@ jobs:
           SPRING_DATASOURCE_URL: jdbc:oracle:thin:@localhost:1521/FREEPDB1
           SPRING_DATASOURCE_USERNAME: system
           SPRING_DATASOURCE_PASSWORD: mateacad26
-        run: mvn -B package --file pom.xml
+        run: mvn -B package --file pom.xml -e
