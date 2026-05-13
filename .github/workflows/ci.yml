@@ -17,6 +17,11 @@ jobs:
         env:
           ORACLE_PASSWORD: mateacad26
           ORACLE_DATABASE: FREEPDB1
+        options: >-
+          --health-cmd "echo exit | sqlplus -s sys/mateacad26@localhost:1521/FREEPDB1 as sysdba"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 15
 
     steps:
       - uses: actions/checkout@v4
@@ -28,12 +33,10 @@ jobs:
           distribution: 'temurin'
           cache: maven
 
-      - name: Wait for Oracle to be ready
-        run: sleep 90
-
       - name: Build with Maven
         env:
           SPRING_DATASOURCE_URL: jdbc:oracle:thin:@localhost:1521/FREEPDB1
           SPRING_DATASOURCE_USERNAME: system
           SPRING_DATASOURCE_PASSWORD: mateacad26
-        run: mvn -B package --file pom.xml -e
+          SPRING_JPA_HIBERNATE_DDL_AUTO: validate
+        run: mvn -B package --file pom.xml
